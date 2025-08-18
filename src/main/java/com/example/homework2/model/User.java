@@ -20,14 +20,14 @@ public class User {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false)
-    private LocalDate created_at;
+    @Column(name = "created_at",nullable = false)
+    private LocalDate createdAt;
 
     public User(String name, String email, Integer age) {
         this.name = name;
         this.email = email;
         this.age = age;
-        this.created_at = LocalDate.now();
+        this.createdAt = LocalDate.now();
     }
 
     public User() {
@@ -62,7 +62,7 @@ public class User {
     }
 
     public LocalDate getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", created_at=" + created_at +
+                ", created_at=" + createdAt +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.example.homework2.view;
 
+import com.example.homework2.config.HibernateConfig;
 import com.example.homework2.dao.api.UserDao;
 import com.example.homework2.dao.impl.UserDaoImpl;
 import com.example.homework2.model.User;
@@ -23,7 +24,6 @@ public class ConsoleInterface {
         System.out.println("6. Exit");
         System.out.print("Your choice: ");
     }
-
 
     public void startView(){
         boolean work = true;
@@ -102,6 +102,7 @@ public class ConsoleInterface {
                     break;
                 } case "6":{
                     work = false;
+                    HibernateConfig.shutdown();
                     break;
                 }
                 default:

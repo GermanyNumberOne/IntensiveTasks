@@ -4,11 +4,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateConfig {
-    private static final SessionFactory sessionFactory = buildSessionFactoryfromCfg();
+    private static SessionFactory sessionFactory;
 
-    private static SessionFactory buildSessionFactoryfromCfg(){
+    private static void buildSessionFactoryFromCfg(){
         try {
-            return new Configuration()
+            sessionFactory = new Configuration()
                     .configure("hibernate.cfg.xml")
                     .buildSessionFactory();
         } catch (Exception e){
@@ -16,7 +16,23 @@ public class HibernateConfig {
         }
     }
 
+    public static void init(String jdbcUrl, String username, String  password, String hdm2ddl){
+        try {
+            sessionFactory = new Configuration()
+                    .configure("hibernate.cfg.xml")
+                    .setProperty("hibernate.connection.url", jdbcUrl)
+                    .setProperty("hibernate.connection.username", username)
+                    .setProperty("hibernate.connection.password", password)
+                    .setProperty("hibernate.hbm2ddl.auto", hdm2ddl)
+                    .buildSessionFactory();
+            System.out.println("Session factory:"  + sessionFactory);
+        } catch (Exception e){
+            throw new RuntimeException("SessionFactory initialization error: " + e.getMessage());
+        }
+    }
+
     public static SessionFactory getSessionFactory(){
+        if (sessionFactory == null) System.out.println("sessionfactory null");
         return sessionFactory;
     }
 

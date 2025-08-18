@@ -6,6 +6,7 @@ import com.example.homework2.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UserDaoImpl implements UserDao {
         }catch (Exception e)
         {
             if(transaction != null)transaction.rollback();
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,10 +55,20 @@ public class UserDaoImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
+
             session.remove(user);
+            transaction.commit();
         } catch (Exception e){
             if(transaction != null) transaction.rollback();
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public List<User> findAllByUsername(String username) {
+        try (Session session = sessionFactory.openSession()){
+            Query query = session.createQuery("select u From User u where u.name = :username");
+            query.setParameter("username", username);
+            return query.list();
         }
     }
 }
